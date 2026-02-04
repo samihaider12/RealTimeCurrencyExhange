@@ -17,16 +17,15 @@ const App = () => {
 
       <Box  >
         {user && <Toolbar />}
-        <Routes>
-          <Route
-            path="*"
-            element={<Navigate to={user ? "/dashboard" : "/auth"} />}
-          />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/form" element={<Form />} />
-          <Route path="/auth" element={!user ? <AuthForm /> : <Navigate to="/dashboard" />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
-        </Routes>
+<Routes>
+  <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/auth" />}/>
+  <Route path="/form" element={user ? <Form /> : <Navigate to="/auth" />}/>
+  <Route path="/auth" element={!user ? <AuthForm /> : <Navigate to="/dashboard" />}/>
+  <Route path="/" element={<Navigate to="/dashboard" />} />
+  <Route path="*" element={<Navigate to="/dashboard" />} />
+
+</Routes>
+
       </Box>
     </Box>
   );

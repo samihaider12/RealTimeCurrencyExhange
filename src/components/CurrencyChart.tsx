@@ -9,12 +9,12 @@ const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'
 
 const CurrencyChart = ({ chartData }: { chartData: any[] }) => {
     return (
-        <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid container spacing={3} sx={{ mb: 4, height:"60%" }}>
 
             {/* 1. Bar Chart */}
             <Grid size={{ xs: 12, md: 8 }}>
                 <Paper sx={{
-                    p: 3, borderRadius: 4, height: 420, boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    p: 3, borderRadius: 4, height: 400, boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                     background: 'linear-gradient(to bottom, #ffffff, #fdfdff)'
                 }}>
                     <Typography variant="h6" sx={{ mb: 3, fontWeight: 500,fontSize:"18px" ,color: '#1e293b' }}>
@@ -49,7 +49,7 @@ const CurrencyChart = ({ chartData }: { chartData: any[] }) => {
             {/* 2. Pie Chart - Cleaned from TS Errors */}
             <Grid size={{ xs: 12, md: 4 }}>
                 <Paper sx={{
-                    p: 3, borderRadius: 4, height: 420, boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    p: 3, borderRadius: 4, height: 400, boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                     display: 'flex', flexDirection: 'column'
                 }}>
                     <Typography variant="h6" sx={{ mb: 3, fontWeight: 500,fontSize:"18px", color: '#1e293b' }}>

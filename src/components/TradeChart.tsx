@@ -40,7 +40,8 @@ const TradeChart: React.FC<TradeChartProps> = ({ allData, activeCurrency, onClos
     <Paper elevation={0} sx={{ 
       p: 3, mb: 4, borderRadius: 4, bgcolor: '#ffffff', 
       border: '1px solid #f0f0f0',
-      boxShadow: '0 10px 25px -5px rgba(0,0,0,0.05)' 
+      boxShadow: '0 10px 25px -5px rgba(0,0,0,0.05)' ,
+      height:"80%"
     }}>
       {/* Header */}
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={4}>
@@ -50,8 +51,8 @@ const TradeChart: React.FC<TradeChartProps> = ({ allData, activeCurrency, onClos
           </IconButton>
           <Box>
              <Stack direction="row" spacing={1} alignItems="center">
-                <Timeline sx={{ color: '#10b981', fontSize: 22 }} />
-                <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>
+                <Timeline sx={{ color: '#10b981', fontSize: "22px" }} />
+                <Typography variant="h6" sx={{ fontWeight: 500, color: '#0f172a', letterSpacing: '-0.5px' }}>
                   {tradePairs[currentIndex]}
                 </Typography>
              </Stack>
@@ -69,7 +70,7 @@ const TradeChart: React.FC<TradeChartProps> = ({ allData, activeCurrency, onClos
             <ArrowBackIosNew sx={{ fontSize: 14 }} />
           </IconButton>
 
-          <Typography variant="body2" sx={{ px: 2, fontWeight: 700, color: '#334155' }}>
+          <Typography variant="body2" sx={{ px: 2, fontWeight: 500, color: '#334155' }}>
             {currentIndex + 1} / {tradePairs.length}
           </Typography>
 

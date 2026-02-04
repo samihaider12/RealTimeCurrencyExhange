@@ -17,8 +17,8 @@ import { country_list } from '../services/currencyList';
 
 const drawerWidth = 240;
 const closedDrawerWidth = 75;
+
 const CurrencyRow = memo(({ code, onClick, open, isMobile, flagUrl }: any) => {
-  // Full currency name nikalne ke liye built-in browser API
   const currencyNames = new Intl.DisplayNames(['en'], { type: 'currency' });
   const fullName = currencyNames.of(code) || "";
 
@@ -40,7 +40,7 @@ const CurrencyRow = memo(({ code, onClick, open, isMobile, flagUrl }: any) => {
               width: 32, 
               height: 32, 
               border: '1px solid #eee',
-              borderRadius: '4px' // Thoda rectangular look flag ke liye
+              borderRadius: '4px' 
             }} 
           />
         </ListItemIcon>
@@ -48,11 +48,11 @@ const CurrencyRow = memo(({ code, onClick, open, isMobile, flagUrl }: any) => {
         {(open || isMobile) && (
           <ListItemText
             primary={
-              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                 <Typography sx={{ fontWeight: 600, fontSize: '15px', color: '#333' }}>
                   {code}
                 </Typography>
-                <Typography sx={{ fontSize: '12px', color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <Typography sx={{ fontSize: '11px', color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {fullName}
                 </Typography>
               </Box>
@@ -76,9 +76,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  
+  // Responsive Breakpoints
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  // ✅ Fix 1: Saare Hooks 'return' se pehle aane chahiye
   const isAuthPage = location.pathname === '/auth';
 
   useEffect(() => {
@@ -119,11 +121,9 @@ const Navbar = () => {
       await signOut(auth);
       Swal.fire({
         title: 'Logged Out',
-        text: 'You successfully logout!',
         icon: 'info',
         timer: 1500,
         showConfirmButton: false,
-        timerProgressBar: true
       });
       navigate('/auth');
     } catch (error: any) {
@@ -133,7 +133,7 @@ const Navbar = () => {
 
   const handleCurrencyClick = (code: string) => {
     navigate(`/dashboard?filter=${code}`);
-    if (isMobile) setMobileOpen(false);
+    if (isMobile || isTablet) setMobileOpen(false);
   };
 
   const handleScroll = (e: React.UIEvent<HTMLElement>) => {
@@ -143,21 +143,20 @@ const Navbar = () => {
     }
   };
 
-  // ✅ Fix 2: 'if' condition ko saare hooks ke NEECHE rakha hai
   if (isAuthPage) return null;
 
   const drawerContent = (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Toolbar />
       <Box sx={{ flexShrink: 0 }}>
-        <ListItemButton onClick={() => navigate('/dashboard')}>
+        <ListItemButton onClick={() => { navigate('/dashboard'); if(isMobile) setMobileOpen(false); }}>
           <ListItemIcon><DashboardIcon color="primary" /></ListItemIcon>
           <ListItemText primary="Full Dashboard" />
         </ListItemButton>
         <Divider />
         <Box sx={{ p: 2 }}>
           <TextField
-            size="small" fullWidth placeholder="Search currency..."
+            size="small" fullWidth placeholder="Search..."
             value={searchText} onChange={(e) => setSearchText(e.target.value)}
           />
         </Box>
@@ -169,7 +168,7 @@ const Navbar = () => {
           flex: 1,
           overflowY: 'auto',
           scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': { width: '6px' },
+          '&::-webkit-scrollbar': { width: '4px' },
           '&::-webkit-scrollbar-thumb': { bgcolor: '#ccc', borderRadius: '10px' }
         }}
       >
@@ -181,15 +180,10 @@ const Navbar = () => {
               symbol={country_list[code] || code[0]}
               flagUrl={`https://flagcdn.com/48x36/${code.substring(0, 2).toLowerCase()}.png`}
               open={open}
-              isMobile={isMobile}
+              isMobile={isMobile || isTablet}
               onClick={handleCurrencyClick}
             />
           ))}
-          {visibleCount < currencies.length && (
-            <Box sx={{ p: 2, textAlign: 'center' }}>
-              <Typography variant="caption" color="textSecondary">Loading more...</Typography>
-            </Box>
-          )}
         </List>
       </Box>
     </Box>
@@ -198,24 +192,38 @@ const Navbar = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1, bgcolor: '#1976d2' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {isMobile && (
-              <IconButton color="inherit" onClick={() => setMobileOpen(true)} sx={{ mr: 2 }}>
+        <Toolbar sx={{ px: { xs: 1, sm: 2 } }}>
+          {/* Left Side: Menu + Brand */}
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+            {(isMobile || isTablet) && (
+              <IconButton color="inherit" onClick={() => setMobileOpen(true)} sx={{ mr: 1 }}>
                 <MenuIcon />
               </IconButton>
             )}
-            <Typography variant="h6">💱 Exchange</Typography>
+            <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ fontWeight: 700 }}>
+              💱 {isMobile ? "Ex" : "Exchange"}
+            </Typography>
           </Box>
-          <Box>
-            <Button color="inherit" component={RouterLink} to="/dashboard" sx={{ mx: 1, textTransform: "none" }}>Dashboard</Button>
-            <Button color="inherit" component={RouterLink} to="/form" sx={{ mx: 1, textTransform: "none" }}>Add +</Button>
+
+          {/* Right Side: Buttons */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 1.5 } }}>
+            <Button color="inherit" component={RouterLink} to="/dashboard" 
+              sx={{ fontSize: { xs: '12px', sm: '14px' }, textTransform: "none", minWidth: 'auto' }}>
+              Dashboard
+            </Button>
+            <Button color="inherit" component={RouterLink} to="/form" 
+              sx={{ fontSize: { xs: '12px', sm: '14px' }, textTransform: "none", minWidth: 'auto' }}>
+              Add+
+            </Button>
             {user ? (
               <Button
+                variant="contained"
+                size="small"
                 sx={{
-                  color: "red",
+                  bgcolor: "#d32f2f",
+                  fontSize: { xs: '10px', sm: '12px' },
                   textTransform: "none",
-                  bgcolor: 'rgba(255,255,255,0.1)'
+                  '&:hover': { bgcolor: '#b71c1c' }
                 }}
                 onClick={handleLogout}>Logout</Button>
             ) : (
@@ -226,17 +234,19 @@ const Navbar = () => {
       </AppBar>
 
       <Drawer
-        variant={isMobile ? "temporary" : "permanent"}
-        open={isMobile ? mobileOpen : open}
+        variant={(isMobile || isTablet) ? "temporary" : "permanent"}
+        open={(isMobile || isTablet) ? mobileOpen : open}
         onClose={() => setMobileOpen(false)}
-        onMouseEnter={() => !isMobile && setOpen(true)}
-        onMouseLeave={() => !isMobile && setOpen(false)}
+        onMouseEnter={() => !(isMobile || isTablet) && setOpen(true)}
+        onMouseLeave={() => !(isMobile || isTablet) && setOpen(false)}
         sx={{
-          width: open ? drawerWidth : closedDrawerWidth,
+          width: open ? drawerWidth : (isMobile || isTablet ? 0 : closedDrawerWidth),
+          flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: (open || isMobile) ? drawerWidth : closedDrawerWidth,
-            transition: 'width 0.15s ease-in-out',
-            overflowX: 'hidden'
+            width: (open || isMobile || isTablet) ? drawerWidth : closedDrawerWidth,
+            transition: 'width 0.2s ease-in-out',
+            overflowX: 'hidden',
+            boxSizing: 'border-box',
           },
         }}
       >

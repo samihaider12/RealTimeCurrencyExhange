@@ -201,19 +201,19 @@ const Navbar = () => {
               </IconButton>
             )}
             <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ fontWeight: 700 }}>
-              💱 {isMobile ? "Ex" : "Exchange"}
+              💱 {isMobile ? "Ex" : "Currency Exchange"}
             </Typography>
           </Box>
 
           {/* Right Side: Buttons */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 1.5 } }}>
             <Button color="inherit" component={RouterLink} to="/dashboard" 
-              sx={{ fontSize: { xs: '12px', sm: '14px' }, textTransform: "none", minWidth: 'auto' }}>
+              sx={{ fontSize: { xs: '12px', sm: '14px' }, fontWeight:400, textTransform: "none", minWidth: 'auto' }}>
               Dashboard
             </Button>
             <Button color="inherit" component={RouterLink} to="/form" 
-              sx={{ fontSize: { xs: '12px', sm: '14px' }, textTransform: "none", minWidth: 'auto' }}>
-              Add+
+              sx={{ fontSize: { xs: '12px', sm: '14px' }, fontWeight:400, textTransform: "none", minWidth: 'auto' }}>
+              Add Currency+
             </Button>
             {user ? (
               <Button

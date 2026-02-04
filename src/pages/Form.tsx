@@ -88,7 +88,7 @@ const Form: React.FC = () => {
 
   return (
 
-    <Container sx={{ mt: 10, width: 450 }}>
+    <Container sx={{ mt: 10, width: 400 }}>
 
       <Paper sx={{ p: 4 }}>
 
@@ -107,9 +107,10 @@ const Form: React.FC = () => {
           <Grid container spacing={2}>
 
             {/* Name */}
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }} sx={{mt:1.5}}>
               <TextField
                 fullWidth
+                size="small"
                 label="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -117,9 +118,10 @@ const Form: React.FC = () => {
             </Grid>
 
             {/* Amount */}
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }} sx={{mt:1.5}}>
               <TextField
                 fullWidth
+                size="small"
                 label="Amount"
                 type="number"
                 value={amount}
@@ -128,8 +130,9 @@ const Form: React.FC = () => {
             </Grid>
 
             {/* From */}
-            <Grid size={{ xs: 6 }}>
+            <Grid size={{ xs: 6 }} sx={{mt:1.5}}>
               <Autocomplete
+                size="small"
                 options={currencies}
                 value={fromCurrency}
                 onChange={(_, v) => setFromCurrency(v || "USD")}
@@ -140,8 +143,9 @@ const Form: React.FC = () => {
             </Grid>
 
             {/* To */}
-            <Grid size={{ xs: 6 }}>
+            <Grid size={{ xs: 6 }} sx={{mt:1.5}}>
               <Autocomplete
+                size="small"
                 options={currencies}
                 value={toCurrency}
                 onChange={(_, v) => setToCurrency(v || "PKR")}
@@ -152,8 +156,8 @@ const Form: React.FC = () => {
             </Grid>
 
             {/* Button */}
-            <Grid size={{ xs: 12 }}>
-              <Button fullWidth type="submit" variant="contained">
+            <Grid  size={{ xs: 12 }} sx={{mt:1.5}}>
+              <Button fullWidth size="small" type="submit" variant="contained">
                 Convert
               </Button>
             </Grid>
